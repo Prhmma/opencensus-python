@@ -114,10 +114,7 @@ class JaegerExporter(base_exporter.Exporter):
         if self.host_name is None or self.port is None:
             return None
 
-        thrift_url = 'http://{}:{}{}'.format(
-            self.host_name,
-            self.port,
-            self.endpoint or DEFAULT_ENDPOINT)
+        thrift_url = f'http://{self.host_name}:{self.port}{self.endpoint or DEFAULT_ENDPOINT}'
 
         auth = None
         if self.username is not None and self.password is not None:
@@ -168,7 +165,7 @@ class JaegerExporter(base_exporter.Exporter):
         top_span = span_datas[0]
 
         trace_id = top_span.context.trace_id if top_span.context is not None \
-            else None
+                else None
 
         jaeger_spans = []
 
@@ -203,7 +200,7 @@ class JaegerExporter(base_exporter.Exporter):
             parent_span_id = span.parent_span_id
 
             jaeger_span = jaeger.Span(
-                traceIdHigh=_convert_hex_str_to_int(trace_id[0:16]),
+                traceIdHigh=_convert_hex_str_to_int(trace_id[:16]),
                 traceIdLow=_convert_hex_str_to_int(trace_id[16:32]),
                 spanId=_convert_hex_str_to_int(span_id),
                 operationName=span.name,
@@ -213,7 +210,8 @@ class JaegerExporter(base_exporter.Exporter):
                 logs=logs,
                 references=refs,
                 flags=flags,
-                parentSpanId=_convert_hex_str_to_int(parent_span_id or '0'))
+                parentSpanId=_convert_hex_str_to_int(parent_span_id or '0'),
+            )
 
             jaeger_spans.append(jaeger_span)
 
@@ -227,11 +225,14 @@ def _extract_refs_from_span(span):
     refs = []
     for link in span.links:
         trace_id = link.trace_id
-        refs.append(jaeger.SpanRef(
-            refType=_convert_reftype_to_jaeger_reftype(link.type),
-            traceIdHigh=_convert_hex_str_to_int(trace_id[0:16]),
-            traceIdLow=_convert_hex_str_to_int(trace_id[16:32]),
-            spanId=_convert_hex_str_to_int(link.span_id)))
+        refs.append(
+            jaeger.SpanRef(
+                refType=_convert_reftype_to_jaeger_reftype(link.type),
+                traceIdHigh=_convert_hex_str_to_int(trace_id[:16]),
+                traceIdLow=_convert_hex_str_to_int(trace_id[16:32]),
+                spanId=_convert_hex_str_to_int(link.span_id),
+            )
+        )
     return refs
 
 
@@ -359,7 +360,7 @@ class Collector(base_exporter.Exporter):
             import base64
             auth_header = '{}:{}'.format(*auth)
             decoded = base64.b64encode(auth_header.encode()).decode('ascii')
-            basic_auth = dict(Authorization='Basic {}'.format(decoded))
+            basic_auth = dict(Authorization=f'Basic {decoded}')
             self.http_transport.setCustomHeaders(basic_auth)
 
     def emit(self, batch):
@@ -374,8 +375,8 @@ class Collector(base_exporter.Exporter):
             # it will call http_transport.flush() and
             # status code and message will be updated
             code = self.http_transport.code
-            msg = self.http_transport.message
             if code >= 300 or code < 200:
+                msg = self.http_transport.message
                 logging.error("Traces cannot be uploaded;\
                         HTTP status code: {}, message {}".format(code, msg))
         except Exception as e:  # pragma: NO COVER

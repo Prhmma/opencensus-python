@@ -236,8 +236,6 @@ class TestOpenCensusClientInterceptor(unittest.TestCase):
         client_call_details.method = 'test'
         response_iter = interceptor.intercept_unary_stream(
             continuation, client_call_details, [])
-        for _ in response_iter:
-            pass
         self.assertTrue(mock_tracer.end_span.called)
 
     def test_intercept_unary_stream_not_trace(self):
@@ -273,9 +271,6 @@ class TestOpenCensusClientInterceptor(unittest.TestCase):
         client_call_details.method = 'test'
         response_iter = interceptor.intercept_stream_stream(
             continuation, client_call_details, [])
-        for _ in response_iter:
-            pass
-
         self.assertTrue(mock_tracer.end_span.called)
 
     def test_intercept_stream_stream_not_trace(self):
@@ -386,8 +381,7 @@ class StreamStreamRpcHandler(grpc.GenericRpcHandler):
         self._stream_stream_handler = stream_stream_handler
 
     def service(self, handler_call_details):
-        resp = StreamStreamMethodHandler(self._stream_stream_handler)
-        return resp
+        return StreamStreamMethodHandler(self._stream_stream_handler)
 
 
 class MockTracer(object):

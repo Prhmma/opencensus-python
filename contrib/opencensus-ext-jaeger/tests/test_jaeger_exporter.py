@@ -177,9 +177,8 @@ class TestJaegerExporter(unittest.TestCase):
 
     def test_translate_to_jaeger(self):
         self.maxDiff = None
-        trace_id_high = '6e0c63257de34c92'
         trace_id_low = 'bf9efcd03927272e'
-        trace_id = trace_id_high + trace_id_low
+        trace_id = f'6e0c63257de34c92{trace_id_low}'
         span_id = '6e0c63257de34c92'
         parent_span_id = '1111111111111111'
 

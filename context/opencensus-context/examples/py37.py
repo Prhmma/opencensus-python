@@ -25,11 +25,7 @@ async def hello(name):
     RuntimeContext.correlation_context = correlation_context
 
     for i in range(3):
-        print('Hello {} {} {}'.format(
-            name,
-            i,
-            RuntimeContext,
-        ))
+        print(f'Hello {name} {i} {RuntimeContext}')
         await asyncio.sleep(0.1)
 
 

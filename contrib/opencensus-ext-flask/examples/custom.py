@@ -78,11 +78,7 @@ def mysql_query():
         query = 'SELECT 2*3'
         cursor.execute(query)
 
-        result = []
-
-        for item in cursor:
-            result.append(item)
-
+        result = list(cursor)
         cursor.close()
         conn.close()
 
@@ -106,11 +102,7 @@ def postgresql_query():
         query = 'SELECT 2*3'
         cursor.execute(query)
 
-        result = []
-
-        for item in cursor.fetchall():
-            result.append(item)
-
+        result = list(cursor.fetchall())
         cursor.close()
         conn.close()
 
@@ -125,19 +117,15 @@ def postgresql_query():
 def sqlalchemy_mysql_query():
     try:
         engine = sqlalchemy.create_engine(
-            'mysql+mysqlconnector://{}:{}@{}'.format(
-                'root', MYSQL_PASSWORD, DB_HOST))
+            f'mysql+mysqlconnector://root:{MYSQL_PASSWORD}@{DB_HOST}'
+        )
         conn = engine.connect()
 
         query = 'SELECT 2*3'
 
         result_set = conn.execute(query)
 
-        result = []
-
-        for item in result_set:
-            result.append(item)
-
+        result = list(result_set)
         return str(result)
 
     except Exception:
@@ -149,20 +137,15 @@ def sqlalchemy_mysql_query():
 def sqlalchemy_postgresql_query():
     try:
         engine = sqlalchemy.create_engine(
-            'postgresql://{}:{}@{}/{}'.format(
-                'postgres', POSTGRES_PASSWORD,
-                DB_HOST, 'postgres'))
+            f'postgresql://postgres:{POSTGRES_PASSWORD}@{DB_HOST}/postgres'
+        )
         conn = engine.connect()
 
         query = 'SELECT 2*3'
 
         result_set = conn.execute(query)
 
-        result = []
-
-        for item in result_set:
-            result.append(item)
-
+        result = list(result_set)
         return str(result)
 
     except Exception:

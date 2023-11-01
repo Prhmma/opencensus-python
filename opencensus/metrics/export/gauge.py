@@ -74,11 +74,7 @@ class GaugePointLong(GaugePoint):
         self._value_lock = threading.Lock()
 
     def __repr__(self):
-        return ("{}({})"
-                .format(
-                    type(self).__name__,
-                    self.value
-                ))
+        return f"{type(self).__name__}({self.value})"
 
     def add(self, val):
         """Add `val` to the current value.
@@ -134,11 +130,7 @@ class GaugePointDouble(GaugePoint):
         self._value_lock = threading.Lock()
 
     def __repr__(self):
-        return ("{}({})"
-                .format(
-                    type(self).__name__,
-                    self.value
-                ))
+        return f"{type(self).__name__}({self.value})"
 
     def add(self, val):
         """Add `val` to the current value.
@@ -200,12 +192,7 @@ class DerivedGaugePoint(GaugePoint):
         self._kwargs = kwargs
 
     def __repr__(self):
-        return ("{}({})({})"
-                .format(
-                    type(self).__name__,
-                    self.func(),
-                    self._kwargs
-                ))
+        return f"{type(self).__name__}({self.func()})({self._kwargs})"
 
     def get_value(self):
         """Get the current value of the underlying measurement.
@@ -236,9 +223,7 @@ class DerivedGaugePoint(GaugePoint):
         :return: The point value conversion of the underlying `GaugePoint`, or
             None if the tracked function no longer exists.
         """
-        if self.get_value() is None:
-            return None
-        return self.gauge_point.to_point_value()
+        return None if self.get_value() is None else self.gauge_point.to_point_value()
 
 
 class BaseGauge(object):
@@ -253,12 +238,7 @@ class BaseGauge(object):
         self._points_lock = threading.Lock()
 
     def __repr__(self):
-        return ('{}(descriptor.name="{}", points={})'
-                .format(
-                    type(self).__name__,
-                    self.descriptor.name,
-                    self.points
-                ))
+        return f'{type(self).__name__}(descriptor.name="{self.descriptor.name}", points={self.points})'
 
     def _remove_time_series(self, label_values):
         with self._points_lock:
@@ -469,11 +449,7 @@ class Registry(metric_producer.MetricProducer):
         self._gauges_lock = threading.Lock()
 
     def __repr__(self):
-        return ('{}(gauges={}'
-                .format(
-                    type(self).__name__,
-                    self.gauges
-                ))
+        return f'{type(self).__name__}(gauges={self.gauges}'
 
     def add_gauge(self, gauge):
         """Add `gauge` to the registry.
@@ -495,9 +471,7 @@ class Registry(metric_producer.MetricProducer):
         name = gauge.descriptor.name
         with self._gauges_lock:
             if name in self.gauges:
-                raise ValueError(
-                    'Another gauge named "{}" is already registered'
-                    .format(name))
+                raise ValueError(f'Another gauge named "{name}" is already registered')
             self.gauges[name] = gauge
 
     def get_metrics(self):
@@ -507,7 +481,4 @@ class Registry(metric_producer.MetricProducer):
         :return: A set of `Metric`s, one for each registered gauge.
         """
         now = datetime.utcnow()
-        metrics = set()
-        for gauge in self.gauges.values():
-            metrics.add(gauge.get_metric(now))
-        return metrics
+        return {gauge.get_metric(now) for gauge in self.gauges.values()}

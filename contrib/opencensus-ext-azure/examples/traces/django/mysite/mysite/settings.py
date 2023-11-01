@@ -23,6 +23,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -64,7 +65,7 @@ MY_CONNECTION_STRING = "'<your-ikey-here>'"
 OPENCENSUS = {
     'TRACE': {
         'SAMPLER': 'opencensus.trace.samplers.ProbabilitySampler(rate=1.0)',
-        'EXPORTER': 'opencensus.ext.azure.trace_exporter.AzureExporter(connection_string=' + MY_CONNECTION_STRING + ')',  # noqa: E501
+        'EXPORTER': f'opencensus.ext.azure.trace_exporter.AzureExporter(connection_string={MY_CONNECTION_STRING})',
     }
 }
 
@@ -166,19 +167,19 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'formatter': 'timestamp',
-            'filename': str(BASE_DIR) + "/../logfile",
+            'filename': f"{str(BASE_DIR)}/../logfile",
         },
         'azure': {
             'level': "DEBUG",
             'class': "opencensus.ext.azure.log_exporter.AzureLogHandler",
             'connection_string': MY_CONNECTION_STRING,
             'formatter': 'timestamp',
-         },
+        },
     },
     'loggers': {
         'custom': {
             'level': 'INFO',
-            'handlers': ['console', 'logfile', 'azure']
+            'handlers': ['console', 'logfile', 'azure'],
         }
-    }
+    },
 }

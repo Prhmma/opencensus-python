@@ -105,9 +105,9 @@ class MeasurementMap(object):
                 self._invalid = True
                 logger.warning("Dropping values, value to record must be "
                                "non-negative")
-                logger.info("Measure '{}' has negative value ({}), refusing "
-                            "to record measurements from {}"
-                            .format(measure.name, value, self))
+                logger.info(
+                    f"Measure '{measure.name}' has negative value ({value}), refusing to record measurements from {self}"
+                )
                 return
 
         self.measure_to_view_map.record(

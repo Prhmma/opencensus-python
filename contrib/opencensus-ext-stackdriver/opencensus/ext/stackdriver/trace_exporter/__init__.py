@@ -29,7 +29,7 @@ from opencensus.trace import attributes_helper, base_exporter, span_data
 from opencensus.trace.attributes import Attributes
 
 # Agent
-AGENT = 'opencensus-python [{}]'.format(__version__)
+AGENT = f'opencensus-python [{__version__}]'
 
 # Environment variable set in App Engine when vm:true is set.
 _APPENGINE_FLEXIBLE_ENV_VM = 'GAE_APPENGINE_HOSTNAME'
@@ -196,7 +196,7 @@ class StackdriverExporter(base_exporter.Exporter):
         :param list of opencensus.trace.span_data.SpanData span_datas:
             SpanData tuples to emit
         """
-        project = 'projects/{}'.format(self.project_id)
+        project = f'projects/{self.project_id}'
 
         # Map each span data to it's corresponding trace id
         trace_span_map = defaultdict(list)
@@ -205,7 +205,7 @@ class StackdriverExporter(base_exporter.Exporter):
 
         stackdriver_spans = []
         # Write spans to Stackdriver
-        for _, sds in trace_span_map.items():
+        for sds in trace_span_map.values():
             # convert to the legacy trace json for easier refactoring
             # TODO: refactor this to use the span data directly
             trace = span_data.format_legacy_trace_json(sds)
@@ -239,8 +239,7 @@ class StackdriverExporter(base_exporter.Exporter):
         trace_id = trace.get('traceId')
 
         for span in spans_json:
-            span_name = 'projects/{}/traces/{}/spans/{}'.format(
-                self.project_id, trace_id, span.get('spanId'))
+            span_name = f"projects/{self.project_id}/traces/{trace_id}/spans/{span.get('spanId')}"
 
             span_json = {
                 'name': span_name,

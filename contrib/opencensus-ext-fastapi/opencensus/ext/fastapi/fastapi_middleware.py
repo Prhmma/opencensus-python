@@ -109,17 +109,16 @@ class FastAPIMiddleware(BaseHTTPMiddleware):
 
     def _prepare_tracer(self, request: Request) -> tracer_module.Tracer:
         span_context = self.propagator.from_headers(request.headers)
-        tracer = tracer_module.Tracer(
+        return tracer_module.Tracer(
             span_context=span_context,
             sampler=self.sampler,
             exporter=self.exporter,
             propagator=self.propagator,
         )
-        return tracer
 
     def _before_request(self, span: Union[Span, BlankSpan], request: Request):
         span.span_kind = span_module.SpanKind.SERVER
-        span.name = "[{}]{}".format(request.method, request.url)
+        span.name = f"[{request.method}]{request.url}"
         span.add_attribute(HTTP_HOST, request.url.hostname)
         span.add_attribute(HTTP_METHOD, request.method)
         span.add_attribute(HTTP_PATH, request.url.path)

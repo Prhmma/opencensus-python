@@ -126,9 +126,7 @@ class TestFastAPIMiddleware(unittest.TestCase):
         self.assertEqual(
             mock_span.span_kind,
             span_module.SpanKind.SERVER)
-        self.assertEqual(
-            mock_span.name,
-            "[{}]{}".format("GET", "http://testserver/wiki/Rabbit"))
+        self.assertEqual(mock_span.name, '[GET]http://testserver/wiki/Rabbit')
 
     @mock.patch.object(FastAPIMiddleware, "_prepare_tracer")
     def test_request_excludelist(self, mock_m):

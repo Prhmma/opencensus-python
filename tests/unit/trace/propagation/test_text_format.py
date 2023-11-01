@@ -67,7 +67,7 @@ class Test_from_carrier(unittest.TestCase):
         carrier = propagator.to_carrier(span_context, carrier)
 
         self.assertEqual(carrier[text_format._TRACE_ID_KEY], test_trace_id)
-        self.assertEqual(carrier[text_format._SPAN_ID_KEY], str(test_span_id))
+        self.assertEqual(carrier[text_format._SPAN_ID_KEY], test_span_id)
         self.assertEqual(carrier[text_format._TRACE_OPTIONS_KEY], test_options)
 
     def test_to_carrier_no_span_id(self):

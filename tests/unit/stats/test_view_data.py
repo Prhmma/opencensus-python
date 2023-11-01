@@ -105,7 +105,7 @@ class TestViewData(unittest.TestCase):
 
         view_data.record(context=context, value=value, timestamp=time)
         tag_values.append('val2')
-        tuple_vals_2 = tuple(['val2'])
+        tuple_vals_2 = ('val2', )
         self.assertFalse(
             tuple_vals_2 in view_data.tag_value_aggregation_data_map)
         view_data.tag_value_aggregation_data_map[

@@ -369,7 +369,7 @@ class TestTransportMixin(unittest.TestCase):
                 post.return_value = MockResponse(200, 'unknown')
                 mixin._transmit_from_storage()
                 post.assert_called_with(
-                    url=url + '/v2.1/track',
+                    url=f'{url}/v2.1/track',
                     data=data,
                     headers=headers,
                     timeout=10.0,
