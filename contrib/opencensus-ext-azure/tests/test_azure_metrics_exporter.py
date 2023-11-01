@@ -70,8 +70,7 @@ def create_metric():
         label_keys=[label_key.LabelKey('key', 'description')]
     )
 
-    mm = metric.Metric(descriptor=desc, time_series=ts)
-    return mm
+    return metric.Metric(descriptor=desc, time_series=ts)
 
 
 def create_metric_ts():
@@ -102,8 +101,7 @@ def create_metric_ts():
         label_keys=[label_key.LabelKey('key', 'description')]
     )
 
-    mm = metric.Metric(descriptor=desc, time_series=ts)
-    return mm
+    return metric.Metric(descriptor=desc, time_series=ts)
 
 
 def create_stats_metric(name, num):
@@ -127,8 +125,7 @@ def create_stats_metric(name, num):
         type_=metric_descriptor.MetricDescriptorType.GAUGE_INT64,
         label_keys=[label_key.LabelKey('key', 'description')]
     )
-    mm = metric.Metric(descriptor=desc, time_series=ts)
-    return mm
+    return metric.Metric(descriptor=desc, time_series=ts)
 
 
 class TestAzureMetricsExporter(unittest.TestCase):

@@ -168,7 +168,7 @@ class TestTraceContextPropagator(unittest.TestCase):
         from opencensus.trace import trace_options
 
         propagator = trace_context_http_header_format.\
-            TraceContextPropagator()
+                TraceContextPropagator()
 
         trace_id = '12345678901234567890123456789012'
         span_id_hex = '1234567890123456'
@@ -180,8 +180,7 @@ class TestTraceContextPropagator(unittest.TestCase):
         headers = propagator.to_headers(span_context)
 
         self.assertTrue('traceparent' in headers)
-        self.assertEqual(headers['traceparent'], '00-{}-{}-01'.format(
-            trace_id, span_id_hex))
+        self.assertEqual(headers['traceparent'], f'00-{trace_id}-{span_id_hex}-01')
 
         self.assertFalse('tracestate' in headers)
 
@@ -191,7 +190,7 @@ class TestTraceContextPropagator(unittest.TestCase):
         from opencensus.trace.tracestate import Tracestate
 
         propagator = trace_context_http_header_format.\
-            TraceContextPropagator()
+                TraceContextPropagator()
 
         trace_id = '12345678901234567890123456789012'
         span_id_hex = '1234567890123456'
@@ -204,8 +203,7 @@ class TestTraceContextPropagator(unittest.TestCase):
         headers = propagator.to_headers(span_context)
 
         self.assertTrue('traceparent' in headers)
-        self.assertEqual(headers['traceparent'], '00-{}-{}-01'.format(
-            trace_id, span_id_hex))
+        self.assertEqual(headers['traceparent'], f'00-{trace_id}-{span_id_hex}-01')
 
         self.assertFalse('tracestate' in headers)
 
@@ -215,7 +213,7 @@ class TestTraceContextPropagator(unittest.TestCase):
         from opencensus.trace.tracestate import Tracestate
 
         propagator = trace_context_http_header_format.\
-            TraceContextPropagator()
+                TraceContextPropagator()
 
         trace_id = '12345678901234567890123456789012'
         span_id_hex = '1234567890123456'
@@ -228,8 +226,7 @@ class TestTraceContextPropagator(unittest.TestCase):
         headers = propagator.to_headers(span_context)
 
         self.assertTrue('traceparent' in headers)
-        self.assertEqual(headers['traceparent'], '00-{}-{}-01'.format(
-            trace_id, span_id_hex))
+        self.assertEqual(headers['traceparent'], f'00-{trace_id}-{span_id_hex}-01')
 
         self.assertTrue('tracestate' in headers)
         self.assertEqual(headers['tracestate'], 'foo=xyz')

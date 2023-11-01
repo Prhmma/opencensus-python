@@ -177,8 +177,7 @@ class TestGoogleCloudFormatPropagator(unittest.TestCase):
         propagator = google_cloud_format.GoogleCloudFormatPropagator()
 
         header = propagator.to_header(span_context)
-        expected_header = '{}/{};o={}'.format(
-            trace_id, int(span_id, 16), 1)
+        expected_header = f'{trace_id}/{int(span_id, 16)};o=1'
 
         self.assertEqual(header, expected_header)
 
@@ -197,8 +196,7 @@ class TestGoogleCloudFormatPropagator(unittest.TestCase):
 
         headers = propagator.to_headers(span_context)
         expected_headers = {
-            'X-Cloud-Trace-Context': '{}/{};o={}'.format(
-                trace_id, int(span_id, 16), 1),
+            'X-Cloud-Trace-Context': f'{trace_id}/{int(span_id, 16)};o=1'
         }
 
         self.assertEqual(headers, expected_headers)

@@ -134,9 +134,5 @@ class TestUtils(unittest.TestCase):
             self.assertEqual(
                 status.canonical_code,
                 test_case['grpc_code'],
-                'HTTP: {} / GRPC: expected = {}, actual = {}'.format(
-                    test_case['http_code'],
-                    test_case['grpc_code'],
-                    status.canonical_code,
-                )
+                f"HTTP: {test_case['http_code']} / GRPC: expected = {test_case['grpc_code']}, actual = {status.canonical_code}",
             )

@@ -43,7 +43,7 @@ class LocalFileBlob(object):
 
     def put(self, data, lease_period=0):
         try:
-            fullpath = self.fullpath + '.tmp'
+            fullpath = f'{self.fullpath}.tmp'
             with open(fullpath, 'w') as file:
                 for item in data:
                     file.write(json.dumps(item))
@@ -53,7 +53,7 @@ class LocalFileBlob(object):
                     file.write('\n')
             if lease_period:
                 timestamp = _now() + _seconds(lease_period)
-                self.fullpath += '@{}.lock'.format(_fmt(timestamp))
+                self.fullpath += f'@{_fmt(timestamp)}.lock'
             os.rename(fullpath, self.fullpath)
             return self
         except Exception:
@@ -64,7 +64,7 @@ class LocalFileBlob(object):
         fullpath = self.fullpath
         if fullpath.endswith('.lock'):
             fullpath = fullpath[: fullpath.rindex('@')]
-        fullpath += '@{}.lock'.format(_fmt(timestamp))
+        fullpath += f'@{_fmt(timestamp)}.lock'
         try:
             os.rename(self.fullpath, fullpath)
         except Exception:
@@ -93,7 +93,7 @@ class LocalFileStorage(object):
         self._maintenance_task = PeriodicTask(
             interval=self.maintenance_period,
             function=self._maintenance_routine,
-            name='{} Storage Worker'.format(source)
+            name=f'{source} Storage Worker',
         )
         self._maintenance_task.daemon = True
         self._maintenance_task.start()
@@ -116,7 +116,7 @@ class LocalFileStorage(object):
             # Race case will throw OSError which we can ignore
             pass
         try:
-            for blob in self.gets():
+            for _ in self.gets():
                 pass
         except Exception:
             pass  # keep silent

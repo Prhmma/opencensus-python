@@ -395,9 +395,8 @@ class TestDerivedGauge(unittest.TestCase):
 
         # with kwargs
         def fn_with_args(value=None):
-            if value:
-                return value
-            return 0
+            return value if value else 0
+
         label_values2 = [1, 2]
         point3 = derived_gauge.create_time_series(label_values2, fn_with_args, value=5)  # noqa: E501
         self.assertEqual(point3.get_value(), 5)

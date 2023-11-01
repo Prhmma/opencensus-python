@@ -378,8 +378,7 @@ class TestStatsbeatMetrics(unittest.TestCase):
 
     def test_get_failure_count_value(self):
         _requests_map.clear()
-        _requests_map['failure'] = {}
-        _requests_map['failure'][400] = 10
+        _requests_map['failure'] = {400: 10}
         self.assertEqual(_get_failure_count_value(400), 10)
         self.assertEqual(_requests_map['failure'][400], 0)
         _requests_map.clear()
@@ -395,24 +394,21 @@ class TestStatsbeatMetrics(unittest.TestCase):
 
     def test_get_retry_count_value(self):
         _requests_map.clear()
-        _requests_map['retry'] = {}
-        _requests_map['retry'][401] = 10
+        _requests_map['retry'] = {401: 10}
         self.assertEqual(_get_retry_count_value(401), 10)
         self.assertEqual(_requests_map['retry'][401], 0)
         _requests_map.clear()
 
     def test_get_throttle_count_value(self):
         _requests_map.clear()
-        _requests_map['throttle'] = {}
-        _requests_map['throttle'][402] = 10
+        _requests_map['throttle'] = {402: 10}
         self.assertEqual(_get_throttle_count_value(402), 10)
         self.assertEqual(_requests_map['throttle'][402], 0)
         _requests_map.clear()
 
     def test_get_exception_count_value(self):
         _requests_map.clear()
-        _requests_map['exception'] = {}
-        _requests_map['exception']['Timeout'] = 10
+        _requests_map['exception'] = {'Timeout': 10}
         self.assertEqual(_get_exception_count_value('Timeout'), 10)
         self.assertEqual(_requests_map['exception']['Timeout'], 0)
         _requests_map.clear()
@@ -685,10 +681,7 @@ class TestStatsbeatMetrics(unittest.TestCase):
 
     def test_get_attach_metric_vm(self):
         stats = _StatsbeatMetrics(_OPTIONS)
-        _vm_data = {}
-        _vm_data["vmId"] = "123"
-        _vm_data["subscriptionId"] = "sub123"
-        _vm_data["osType"] = "linux"
+        _vm_data = {"vmId": "123", "subscriptionId": "sub123", "osType": "linux"}
         stats._vm_data = _vm_data
         stats._vm_retry = True
         metadata_mock = mock.Mock()
@@ -709,10 +702,7 @@ class TestStatsbeatMetrics(unittest.TestCase):
 
     def test_get_attach_metric_vm_no_os(self):
         stats = _StatsbeatMetrics(_OPTIONS)
-        _vm_data = {}
-        _vm_data["vmId"] = "123"
-        _vm_data["subscriptionId"] = "sub123"
-        _vm_data["osType"] = None
+        _vm_data = {"vmId": "123", "subscriptionId": "sub123", "osType": None}
         stats._vm_data = _vm_data
         stats._vm_retry = True
         metadata_mock = mock.Mock()

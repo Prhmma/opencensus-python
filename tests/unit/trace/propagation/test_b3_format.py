@@ -132,9 +132,7 @@ class TestB3FormatPropagator(unittest.TestCase):
         trace_id = "80f198ee56343ba864fe8b2a57d3eff7"
         span_id = "e457b5a2e4d86bd1"
 
-        headers = {
-            'b3': "{}-{}-d-05e3ac9a4f6e3b90".format(trace_id, span_id)
-        }
+        headers = {'b3': f"{trace_id}-{span_id}-d-05e3ac9a4f6e3b90"}
         propagator = b3_format.B3FormatPropagator()
         span_context = propagator.from_headers(headers)
 
@@ -172,9 +170,7 @@ class TestB3FormatPropagator(unittest.TestCase):
     def test_from_single_header_defer_sampling(self):
         trace_id = "80f198ee56343ba864fe8b2a57d3eff7"
         span_id = "e457b5a2e4d86bd1"
-        headers = {
-            'b3': "{}-{}".format(trace_id, span_id)
-        }
+        headers = {'b3': f"{trace_id}-{span_id}"}
         propagator = b3_format.B3FormatPropagator()
         span_context = propagator.from_headers(headers)
 

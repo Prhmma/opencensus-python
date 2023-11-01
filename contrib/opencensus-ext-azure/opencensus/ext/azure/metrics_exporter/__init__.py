@@ -163,11 +163,10 @@ class MetricsExporter(TransportMixin, ProcessorMixin):
 
     def shutdown(self):
         if self.exporter_thread:
-            # flush if metrics exporter is not for stats
-            if not self._is_stats:
-                self.exporter_thread.close()
-            else:
+            if self._is_stats:
                 self.exporter_thread.cancel()
+            else:
+                self.exporter_thread.close()
         # Shutsdown storage worker
         if self.storage:
             self.storage.close()
